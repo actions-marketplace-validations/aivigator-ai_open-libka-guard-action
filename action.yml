@@ -1,0 +1,55 @@
+name: LibKa Guard
+description: Build LibKa documents and check every output for accessibility (WCAG 2.2 A/AA, contrast, PDF/UA); fail on any finding.
+author: LibKa
+branding:
+  icon: check-circle
+  color: green
+
+inputs:
+  documents:
+    description: The LibKa documents (Markdown) to build and check, one path or glob per line. Each gets the outputs its front matter asks for.
+    required: false
+    default: ''
+  pages:
+    description: Finished HTML pages to check with Guard only (libka check), one path or glob per line.
+    required: false
+    default: ''
+  outputs:
+    description: Replaces each document's own outputs for this run, such as "web,pdf" (web, pdf, deck, docx).
+    required: false
+    default: ''
+  cli:
+    description: The LibKa command line to run, as npm installs it. Empty means @libka/cli at this action's version.
+    required: false
+    default: ''
+  working-directory:
+    description: Where the paths are relative to.
+    required: false
+    default: '.'
+
+outputs:
+  checked:
+    description: How many documents and pages were checked.
+    value: ${{ steps.guard.outputs.checked }}
+  failed:
+    description: How many of them failed.
+    value: ${{ steps.guard.outputs.failed }}
+
+runs:
+  using: composite
+  steps:
+    - name: Node.js for LibKa
+      uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version: '22'
+    - name: Build and check with LibKa Guard
+      id: guard
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        INPUT_DOCUMENTS: ${{ inputs.documents }}
+        INPUT_PAGES: ${{ inputs.pages }}
+        INPUT_OUTPUTS: ${{ inputs.outputs }}
+        INPUT_CLI: ${{ inputs.cli }}
+        ACTION_REF: ${{ github.action_ref }}
+      run: node "${{ github.action_path }}/run.mjs"
