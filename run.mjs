@@ -11,7 +11,7 @@ const pages = expand(lines('INPUT_PAGES'));
 const outputs = (process.env.INPUT_OUTPUTS ?? '').trim();
 
 /** This action's version, written in when it is exported (a commit-pinned action has no tag to read it from). */
-const VERSION = '2.0.0';
+const VERSION = '2.0.1';
 
 /** The command line to run: the given one, or @libka/cli at this action's version (its tag, or the one written in). */
 export function cliSpec(input, ref, own = VERSION) {
