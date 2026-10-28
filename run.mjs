@@ -1,7 +1,7 @@
 // LibKa Guard as a GitHub Action (action.yml): builds each document with the LibKa command line, which checks every
 // output and signs those that pass, or checks finished pages; writes the results to the job summary, marks each
-// problem on its line (an annotation), and fails the job when anything fails. Plain Node, so it runs on Linux,
-// Windows and macOS runners alike.
+// problem (an annotation: a problem in the source on its line, a finding in an output on its file), and fails the
+// job when anything fails. Plain Node, so it runs on Linux, Windows and macOS runners alike.
 import { spawnSync } from 'node:child_process';
 import { appendFileSync, existsSync, globSync } from 'node:fs';
 
@@ -11,7 +11,7 @@ const pages = expand(lines('INPUT_PAGES'));
 const outputs = (process.env.INPUT_OUTPUTS ?? '').trim();
 
 /** This action's version, written in when it is exported (a commit-pinned action has no tag to read it from). */
-const VERSION = '2.0.1';
+const VERSION = '2.0.2';
 
 /** The command line to run: the given one, or @libka/cli at this action's version (its tag, or the one written in). */
 export function cliSpec(input, ref, own = VERSION) {
