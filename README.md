@@ -1,6 +1,6 @@
 # LibKa Guard
 
-A GitHub Action that builds [LibKa](https://github.com/aivigator-ai/open-libka-design-platform) documents and checks every output before anything is merged: axe-core with the WCAG 2.2 A and AA rules, the contrast of every text (4.5:1, and 7:1 when the reader asks for more contrast), LibKa's structure rules, PDF/UA-1 by veraPDF when it is installed, and the Word file's structure. Outputs that pass are signed. Any finding fails the job, is marked on its line in the pull request, and is listed in the job summary.
+A GitHub Action that builds [LibKa](https://github.com/aivigator-ai/open-libka-design-platform) documents and checks every output before anything is merged: axe-core with the WCAG 2.2 A and AA rules, the contrast of every text (4.5:1, and 7:1 when the reader asks for more contrast), LibKa's structure rules, PDF/UA-1 by veraPDF when it is installed, and the Word file's structure. Outputs that pass are signed. Any finding fails the job and is listed in the job summary; in the pull request, a problem in the source is marked on its line, and a finding in an output on its file.
 
 ## Use it
 
@@ -20,6 +20,8 @@ jobs:
             docs/*.md
             guides/**/*.md
 ```
+
+The action runs in your repository, on your runners: in a public repository GitHub's standard runners are free; in a private one, the job's minutes, and any outputs you keep as an artifact, count toward your account's Actions minutes and storage.
 
 GitHub's Ubuntu and Windows runners come with Google Chrome, which LibKa needs. Without Java and veraPDF on the runner, PDFs are still built, and their manifest and conformance report say the PDF was not validated against PDF/UA.
 
